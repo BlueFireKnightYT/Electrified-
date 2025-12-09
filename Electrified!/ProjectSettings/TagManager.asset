@@ -9,6 +9,8 @@ TagManager:
   - Wire
   - Capacitor
   - LED
+  - NextLvl
+  - CPU
   layers:
   - Default
   - TransparentFX

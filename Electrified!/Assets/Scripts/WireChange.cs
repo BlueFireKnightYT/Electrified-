@@ -1,16 +1,17 @@
+using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Progress;
-
 public class WireChange : MonoBehaviour
 {
     public capacitorPower cP;
+    public GameManager gm;
 
     [SerializeField] public GameObject[] connections;
     [SerializeField] Animator EpointAnim;
     public bool isPowered;
-    private float cooldown = 3f;
+    private float capacitorDuration = 5f;
     private float newCooldown;
     private bool cooledDown = false;
+
         
     
     private void OnTriggerEnter2D(Collider2D other)
@@ -36,6 +37,8 @@ public class WireChange : MonoBehaviour
 
     private void Update()
     {
+
+
         if (isPowered == true)
         {
             foreach (GameObject item in connections)
@@ -56,6 +59,13 @@ public class WireChange : MonoBehaviour
                 {
                     SpriteRenderer srLED = item.GetComponent<SpriteRenderer>();
                     srLED.color = Color.green;
+
+                    // Only increment once per LED GameObject
+                    if (gm != null && !gm.countedLEDs.Contains(item))
+                    {
+                        gm.lightsOn++;
+                        gm.countedLEDs.Add(item);
+                    }
                 }
 
             }
@@ -83,16 +93,30 @@ public class WireChange : MonoBehaviour
                         cooledDown = false;
                     }
 
+                    if(cP != null)
+                    { 
                     if (cooledDown == true)
-                    {
-                        capacitorAnim.SetBool("isOn", false);
-                        cP.isPowered = false;
+                        {
+                            capacitorAnim.SetBool("isOn", false);
+                            cP.isPowered = false;
+                        }
                     }
                 }
                 if (item.CompareTag("LED"))
                 {
                     SpriteRenderer srLED = item.GetComponent<SpriteRenderer>();
                     srLED.color = Color.white;
+
+                    // Only decrement if this LED was previously counted
+                    if (gm != null && gm.countedLEDs.Contains(item))
+                    {
+                        gm.lightsOn--;
+                        gm.countedLEDs.Remove(item);
+
+                        // safety: prevent negative counts
+                        if (gm.lightsOn < 0)
+                            gm.lightsOn = 0;
+                    }
                 }
 
             }
@@ -101,6 +125,6 @@ public class WireChange : MonoBehaviour
 
     private void StartCooldown()
     {
-        newCooldown = Time.time + cooldown;
+        newCooldown = Time.time + capacitorDuration;
     }
 }
