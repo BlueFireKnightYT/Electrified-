@@ -8,6 +8,7 @@ TagManager:
   - E-point
   - Wire
   - Capacitor
+  - LED
   layers:
   - Default
   - TransparentFX

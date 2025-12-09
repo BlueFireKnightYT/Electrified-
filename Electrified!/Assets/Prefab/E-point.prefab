@@ -201,4 +201,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb2fed80e7f686d4880377e124102cef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WireChange
-  connectedWires: []
+  cP: {fileID: 0}
+  connections:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  EpointAnim: {fileID: 3710443112960522553}
+  isPowered: 0

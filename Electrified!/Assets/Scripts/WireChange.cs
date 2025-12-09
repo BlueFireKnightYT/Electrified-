@@ -1,7 +1,10 @@
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class WireChange : MonoBehaviour
 {
+    public capacitorPower cP;
+
     [SerializeField] public GameObject[] connections;
     [SerializeField] Animator EpointAnim;
     public bool isPowered;
@@ -27,6 +30,7 @@ public class WireChange : MonoBehaviour
             isPowered = false;
             StartCooldown();
         }
+
     }
 
 
@@ -40,13 +44,20 @@ public class WireChange : MonoBehaviour
                 {
                     SpriteRenderer srWire = item.GetComponent<SpriteRenderer>();
                     srWire.color = Color.yellow;
-                    Debug.Log("Wire is on");
                 }
                 if (item.CompareTag("Capacitor"))
                 {
                     Animator capacitorAnim = item.GetComponent<Animator>();
                     capacitorAnim.SetBool("isOn", true);
+                    cP.isPowered = true;
+                    Debug.Log("on!");
                 }
+                if (item.CompareTag("LED"))
+                {
+                    SpriteRenderer srLED = item.GetComponent<SpriteRenderer>();
+                    srLED.color = Color.green;
+                }
+
             }
         }
         else
@@ -57,7 +68,6 @@ public class WireChange : MonoBehaviour
                 {
                     SpriteRenderer srWire = item.GetComponent<SpriteRenderer>();
                     srWire.color = Color.gray;
-                    Debug.Log("Wire is off");
                 }
                 if (item.CompareTag("Capacitor"))
                 {
@@ -67,7 +77,6 @@ public class WireChange : MonoBehaviour
                     if(Time.time >= newCooldown)
                     {
                         cooledDown = true;
-                        Debug.Log("off");
                     }
                     else
                     {
@@ -77,7 +86,13 @@ public class WireChange : MonoBehaviour
                     if (cooledDown == true)
                     {
                         capacitorAnim.SetBool("isOn", false);
+                        cP.isPowered = false;
                     }
+                }
+                if (item.CompareTag("LED"))
+                {
+                    SpriteRenderer srLED = item.GetComponent<SpriteRenderer>();
+                    srLED.color = Color.white;
                 }
 
             }
