@@ -8,9 +8,6 @@ public class Movement : MonoBehaviour
     [SerializeField] private float speed = 5f;
     private float inputMoveY;
     private float inputMoveX;
-    private Vector2 move;
-
-
 
     void FixedUpdate()
     {
@@ -25,9 +22,5 @@ public class Movement : MonoBehaviour
 
         anim.SetFloat("MoveY", inputMoveY);
         anim.SetFloat("MoveX", inputMoveX);
-    }
-    private void Update()
-    {
-
     }
 }
