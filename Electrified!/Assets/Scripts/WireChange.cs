@@ -13,7 +13,7 @@ public class WireChange : MonoBehaviour
     private bool cooledDown = false;
 
         
-    
+    // Checks if something walks onto the items trigger and checks for the 'butterfly tag'
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Butterfly"))
@@ -23,6 +23,7 @@ public class WireChange : MonoBehaviour
         }
     }
 
+    // Checks if something walks out of the object and checks for the 'butterfly' tag
     private void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("Butterfly"))
@@ -41,6 +42,7 @@ public class WireChange : MonoBehaviour
 
         if (isPowered == true)
         {
+            //turns on the wire, capacitor and led
             foreach (GameObject item in connections)
             {
                 if(item.CompareTag("Wire"))
@@ -48,6 +50,7 @@ public class WireChange : MonoBehaviour
                     SpriteRenderer srWire = item.GetComponent<SpriteRenderer>();
                     srWire.color = Color.yellow;
                 }
+
                 if (item.CompareTag("Capacitor"))
                 {
                     Animator capacitorAnim = item.GetComponent<Animator>();
@@ -55,12 +58,13 @@ public class WireChange : MonoBehaviour
                     cP.isPowered = true;
                     Debug.Log("on!");
                 }
+
                 if (item.CompareTag("LED"))
                 {
                     SpriteRenderer srLED = item.GetComponent<SpriteRenderer>();
                     srLED.color = Color.green;
 
-                    // Only increment once per LED GameObject
+                    // Only happens once per LED GameObject
                     if (gm != null && !gm.countedLEDs.Contains(item))
                     {
                         gm.lightsOn++;
@@ -72,6 +76,7 @@ public class WireChange : MonoBehaviour
         }
         else
         {
+            // Turns off the wire, capacitor and LED
             foreach (GameObject item in connections)
             {
                 if(item.CompareTag("Wire"))
@@ -79,11 +84,12 @@ public class WireChange : MonoBehaviour
                     SpriteRenderer srWire = item.GetComponent<SpriteRenderer>();
                     srWire.color = Color.gray;
                 }
+
                 if (item.CompareTag("Capacitor"))
                 {
                     Animator capacitorAnim = item.GetComponent<Animator>();
                     
-                    
+                    //turns off capacitor after 5 seconds
                     if(Time.time >= newCooldown)
                     {
                         cooledDown = true;
@@ -102,6 +108,7 @@ public class WireChange : MonoBehaviour
                         }
                     }
                 }
+
                 if (item.CompareTag("LED"))
                 {
                     SpriteRenderer srLED = item.GetComponent<SpriteRenderer>();
@@ -123,6 +130,7 @@ public class WireChange : MonoBehaviour
         }
     }
 
+    // starts the duration for the capacitor
     private void StartCooldown()
     {
         newCooldown = Time.time + capacitorDuration;

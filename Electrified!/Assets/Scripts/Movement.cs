@@ -11,9 +11,11 @@ public class Movement : MonoBehaviour
 
     void FixedUpdate()
     {
+        // Sets your speed
         rb.linearVelocity = new Vector2(inputMoveX * speed, inputMoveY * speed);
     }
 
+    // Checks your input
     public void OnMove(InputAction.CallbackContext context)
     {
         Vector2 move = context.ReadValue<Vector2>();

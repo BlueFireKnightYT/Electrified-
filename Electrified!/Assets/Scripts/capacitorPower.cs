@@ -17,12 +17,15 @@ public class capacitorPower : MonoBehaviour
         {
             foreach (GameObject item in itemList)
             {
+
+                //Checks tag and changes wire colors
                 if (item.CompareTag("Wire"))
                 {
                     SpriteRenderer srWire = item.GetComponent<SpriteRenderer>();
                     srWire.color = Color.yellow;
                 }
 
+                //same for the LED
                 if (item.CompareTag("LED"))
                 {
                     SpriteRenderer srLED = item.GetComponent<SpriteRenderer>();
@@ -39,15 +42,19 @@ public class capacitorPower : MonoBehaviour
         {
             foreach (GameObject item in itemList)
             {
+                // Changes it back
                 if (item.CompareTag("Wire"))
                 {
                     SpriteRenderer srWire = item.GetComponent<SpriteRenderer>();
                     srWire.color = Color.gray;
                 }
+                //Same for the LED
                 if (item.CompareTag("LED"))
                 {
                     SpriteRenderer srLED = item.GetComponent<SpriteRenderer>();
                     srLED.color = Color.white;
+
+                    //This only happens when the Game manager script is not null
                     if (gm != null && gm.countedLEDs.Contains(item))
                     {
                         gm.lightsOn--;
