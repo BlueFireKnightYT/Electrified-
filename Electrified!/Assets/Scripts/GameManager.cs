@@ -11,7 +11,12 @@ public class GameManager : MonoBehaviour
 
     public GameObject cpuSocketTxt;
     public GameObject hintTxt;
-    
+
+    [SerializeField] private AudioSource source;
+    [SerializeField] private AudioClip pop;
+
+    [SerializeField] float pitchVariance = 0.05f;
+
 
     private void Start()
     {
@@ -19,7 +24,11 @@ public class GameManager : MonoBehaviour
         CPUrb.bodyType = RigidbodyType2D.Static;
 
         // Turns off the cpu socket text on start
-        cpuSocketTxt.SetActive(false);
+
+        if (cpuSocketTxt != null)
+        { 
+            cpuSocketTxt.SetActive(false);
+        }
     }
     private void Update()
     {
@@ -29,12 +38,24 @@ public class GameManager : MonoBehaviour
             CPUrb.bodyType = RigidbodyType2D.Dynamic;
 
             // manages text when the 
-            hintTxt.SetActive(false);
-            cpuSocketTxt.SetActive(true);
+            if (hintTxt != null)
+            {
+                hintTxt.SetActive(false);
+            }
+
+            if (cpuSocketTxt != null)
+            { 
+                cpuSocketTxt.SetActive(true);
+            }
 
             // Shoots the cpu away
             Vector2 impulse = Random.insideUnitCircle.normalized * Random.Range(pushForce * 0.5f, pushForce);
             CPUrb.AddForce(impulse, ForceMode2D.Impulse);
+
+            float randomPitch = Random.Range(1f - pitchVariance, 1f + pitchVariance);
+
+            source.pitch = randomPitch;
+            source.PlayOneShot(pop);
 
             //adds one to the neededlights, because else you can shoot the CPU away multiple times
             neededLights++;

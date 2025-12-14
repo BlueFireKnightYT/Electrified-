@@ -54,13 +54,11 @@ public class capacitorPower : MonoBehaviour
                     SpriteRenderer srLED = item.GetComponent<SpriteRenderer>();
                     srLED.color = Color.white;
 
-                    //This only happens when the Game manager script is not null
                     if (gm != null && gm.countedLEDs.Contains(item))
                     {
                         gm.lightsOn--;
                         gm.countedLEDs.Remove(item);
 
-                        // safety: prevent negative counts
                         if (gm.lightsOn < 0)
                             gm.lightsOn = 0;
                     }

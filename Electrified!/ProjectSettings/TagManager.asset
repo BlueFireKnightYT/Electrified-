@@ -11,6 +11,7 @@ TagManager:
   - LED
   - NextLvl
   - CPU
+  - wireparent
   layers:
   - Default
   - TransparentFX

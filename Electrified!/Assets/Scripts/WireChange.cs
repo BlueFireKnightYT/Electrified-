@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 public class WireChange : MonoBehaviour
 {
@@ -11,15 +10,29 @@ public class WireChange : MonoBehaviour
     private float capacitorDuration = 5f;
     private float newCooldown;
     private bool cooledDown = false;
+    [SerializeField] AudioSource source;
+    [SerializeField] AudioClip zap;
 
+    [SerializeField] float pitchVariance = 0.1f;
         
     // Checks if something walks onto the items trigger and checks for the 'butterfly tag'
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Butterfly"))
         {
-            EpointAnim.SetBool("IsOn", true);
+            if (EpointAnim != null)
+            {
+                EpointAnim.SetBool("IsOn", true);
+            }
             isPowered = true;
+
+            float randomPitch = Random.Range(1f - pitchVariance, 1f + pitchVariance);
+
+            if (source != null)
+            {
+                source.pitch = randomPitch;
+                source.PlayOneShot(zap);
+            }
         }
     }
 
@@ -28,7 +41,10 @@ public class WireChange : MonoBehaviour
     {
         if (other.CompareTag("Butterfly"))
         {
-            EpointAnim.SetBool("IsOn", false);
+            if (EpointAnim != null)
+            {
+                EpointAnim.SetBool("IsOn", false);
+            }
             isPowered = false;
             StartCooldown();
         }
