@@ -6,11 +6,14 @@ public class NextLvl : MonoBehaviour
     private float neededTime = 3f;
     private float newCooldown = float.PositiveInfinity;
 
+    [SerializeField] AudioSource src;
+    [SerializeField] AudioClip clip;
     public Animator SocketAnim;
 
     private void Start()
     {
         SocketAnim = GetComponent<Animator>();
+        src = GetComponent<AudioSource>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -19,6 +22,7 @@ public class NextLvl : MonoBehaviour
         {
             StartCooldown();
             SocketAnim.SetBool("IsCharging", true);
+            src.PlayOneShot(clip);
         }
     }
 
@@ -28,6 +32,7 @@ public class NextLvl : MonoBehaviour
         {
             StopCooldown();
             SocketAnim.SetBool("IsCharging", false);
+            src.Stop();
         }
     }
 
