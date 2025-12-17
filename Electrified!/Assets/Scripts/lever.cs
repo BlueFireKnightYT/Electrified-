@@ -1,16 +1,47 @@
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
+using static Unity.VisualScripting.Member;
 
-public class capacitorPower : MonoBehaviour
+public class lever : MonoBehaviour
 {
-    [SerializeField] private GameObject[] itemList;
-    public bool isPowered;
-
+    bool isPowered = false;
+    [SerializeField] AudioSource source;
+    [SerializeField] AudioClip click;
+    public GameObject[] itemList;
     public GameManager gm;
+    [SerializeField] SpriteRenderer sr;
+    [SerializeField] Sprite sprite1;
+    [SerializeField] Sprite sprite2;
 
-    // Track which LED GameObjects we've already counted so we only increment once per LED
+    [SerializeField] float pitchVariance = 0.5f;
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Butterfly"))
+        {
+            if (isPowered == false)
+            {
+                isPowered = true;
+                sr.sprite = sprite1;
+            }
 
-    private void Update()
+            else
+            {
+                isPowered = false;
+                sr.sprite = sprite2;
+            }
+
+            float randomPitch = Random.Range(1f - pitchVariance, 1f + pitchVariance);
+
+            if (source != null)
+            {
+                source.pitch = randomPitch;
+                source.PlayOneShot(click);
+            }
+        }
+    }
+
+
+        private void Update()
     {
         if (isPowered == true)
         {
@@ -29,6 +60,7 @@ public class capacitorPower : MonoBehaviour
                 {
                     SpriteRenderer srLED = item.GetComponent<SpriteRenderer>();
                     srLED.color = Color.green;
+                    Debug.Log("Light on (lever)");
                     if (gm != null && !gm.countedLEDs.Contains(item))
                     {
                         gm.lightsOn++;
@@ -52,6 +84,7 @@ public class capacitorPower : MonoBehaviour
                 {
                     SpriteRenderer srLED = item.GetComponent<SpriteRenderer>();
                     srLED.color = Color.white;
+                    Debug.Log("Light off (lever)");
 
                     if (gm != null && gm.countedLEDs.Contains(item))
                     {

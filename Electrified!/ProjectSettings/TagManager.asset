@@ -12,6 +12,7 @@ TagManager:
   - NextLvl
   - CPU
   - wireparent
+  - lever
   layers:
   - Default
   - TransparentFX
